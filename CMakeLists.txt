@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.22)
 
 project(flac-streamer CXX)
 
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+
 set(BUILD_SHARED_LIBS OFF)
 
 # set(CMAKE_OSX_ARCHITECTURES arm64e)
@@ -57,6 +59,20 @@ endif()
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS YES)
 
+# set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+# # cmake_policy(SET CMP0077 NEW)
+# option(BUILD_CXXLIBS ON)
+# option(BUILD_PROGRAMS ON)
+# option(BUILD_EXAMPLES OFF)
+# option(BUILD_TESTING OFF)
+# option(BUILD_DOCS OFF)
+# option(WITH_FORTIFY_SOURCE ON)
+# option(WITH_STACK_PROTECTOR ON)
+# option(INSTALL_MANPAGES OFF)
+# option(INSTALL_PKGCONFIG_MODULES OFF)
+# option(INSTALL_CMAKE_CONFIG_MODULE OFF)
+# option(WITH_OGG OFF)
+# option(ENABLE_MULTITHREADING ON)
 add_subdirectory(3rdparty)
 
 add_subdirectory(lib)

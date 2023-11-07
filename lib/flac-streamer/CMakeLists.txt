@@ -22,6 +22,8 @@ foreach(SRC ${FLAC_STREAMER_SRC})
 endforeach()
 
 set(FLAC_STREAMER_PUBLIC_LIBS
+    dr_libs
+    FLAC++
     icecream
 )
 
