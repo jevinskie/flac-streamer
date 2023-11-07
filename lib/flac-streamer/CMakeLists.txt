@@ -2,6 +2,7 @@ set(FLAC_STREAMER_SRC
     dr_libs.cpp
     common-internal.h
     flac-streamer.cpp
+    utils.cpp
 )
 
 set(FLAC_STREAMER_HDR_STANDALONE

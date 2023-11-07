@@ -21,7 +21,8 @@ int main(int argc, const char *argv[]) {
         return -1;
     }
 
-    fmt::print("flac-streamer-util\n");
     auto streamer = FLACStreamer(parser.get("--in-file"), parser.get("--out-file"));
+    streamer.encode();
+
     return 0;
 }
