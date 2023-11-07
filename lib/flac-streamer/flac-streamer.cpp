@@ -17,7 +17,7 @@ namespace FLACStreaming {
 
 using namespace dr_libs::dr_wav;
 
-FLACStreamer::FLACStreamer(const fs::path &wav_path, const fs::path &flac_path, uint32_t comp_level)
+FLACStreamer::FLACStreamer(const fs::path &wav_path, const fs::path &flac_path)
     : m_flac_path{flac_path} {
     fmt::print("FLACStreamer ctor\n");
     if (!drwav_init_file(&m_wav, wav_path.c_str(), nullptr)) {
@@ -27,7 +27,6 @@ FLACStreamer::FLACStreamer(const fs::path &wav_path, const fs::path &flac_path, 
     set_channels(m_wav.channels);
     set_bits_per_sample(m_wav.bitsPerSample);
     set_sample_rate(m_wav.sampleRate);
-    set_compression_level(comp_level);
     if (flac_path.string() != "-") {
         m_out_fh = fopen(flac_path.c_str(), "wb");
         if (!m_out_fh) {
@@ -67,7 +66,8 @@ void FLACStreamer::encode() {
     const auto num_samples_read = drwav_read_pcm_frames_s32(&m_wav, num_samples, buf.data());
     assert(num_samples_read == num_samples);
     for (size_t i = 0; i < buf.size(); ++i) {
-        buf[i] = (::FLAC__int32)((((double)buf[i]) * num_bits / 32.0) + 0.5);
+        // buf[i] = (::FLAC__int32)((((double)buf[i]) * num_bits / 32.0) + 0.5);
+        buf[i] = (::FLAC__int32)((double)buf[i] * 32767.0 / 2147483647.0);
         if (buf[i] > INT16_MAX) {
             buf[i] = INT16_MAX;
         } else if (buf[i] < INT16_MIN) {
