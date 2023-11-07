@@ -5,4 +5,8 @@
 #include <string>
 #include <string_view>
 
-#include "common-c.h"
+#include "common-attrs.h"
+
+namespace FLACStreaming {
+namespace fs = std::filesystem;
+}

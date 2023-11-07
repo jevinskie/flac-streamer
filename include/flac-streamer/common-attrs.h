@@ -1,8 +1,15 @@
 #pragma once
 
+#ifndef FLACSTREAMER_HONOR_INLINE
+#define FLACSTREAMER_HONOR_INLINE 1
+#endif
+
 #define FLACSTREAMER_EXPORT __attribute__((visibility("default")))
+#if FLACSRTEAMER_HONOR_INLINE
 #define FLACSTREAMER_INLINE __attribute__((always_inline))
-// #define FLACSTREAMER_INLINE
+#else
+#define FLACSTREAMER_INLINE
+#endif
 #define FLACSTREAMER_NOINLINE __attribute__((noinline))
 #define FLACSTREAMER_LIKELY(cond) __builtin_expect((cond), 1)
 #define FLACSTREAMER_UNLIKELY(cond) __builtin_expect((cond), 0)

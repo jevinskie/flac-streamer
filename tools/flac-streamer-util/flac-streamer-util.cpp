@@ -2,16 +2,26 @@
 
 #undef NDEBUG
 #include <cassert>
-#include <cstdint>
-#include <filesystem>
+#include <cstdlib>
 
 #include <argparse/argparse.hpp>
 #include <fmt/format.h>
 
-namespace fs = std::filesystem;
+using namespace FLACStreaming;
 
 int main(int argc, const char *argv[]) {
+    argparse::ArgumentParser parser(getprogname());
+    parser.add_argument("-i", "--in-file").required().help("input wave file path");
+    parser.add_argument("-o", "--out-file").help("output FLAC file path (use - for stdout)");
+
+    try {
+        parser.parse_args(argc, argv);
+    } catch (const std::runtime_error &err) {
+        fmt::print(stderr, "Error parsing arguments: {:s}\n", err.what());
+        return -1;
+    }
+
     fmt::print("flac-streamer-util\n");
-    auto streamer = FLACStreamer();
+    auto streamer = FLACStreamer(parser.get("--in-file"), parser.get("--out-file"));
     return 0;
 }

@@ -1,17 +1,26 @@
 #pragma once
 
 #include "common.h"
+#include "dr_libs.h"
 
-#include "dr_libs/dr_wav.h"
-// #include <FLAC++/encoder.h>
+#include <FLAC++/encoder.h>
 
-class FLACSTREAMER_EXPORT FLACStreamer {
+namespace FLACStreaming {
+
+using namespace dr_libs::dr_wav;
+
+class FLACSTREAMER_EXPORT FLACStreamer : public FLAC::Encoder::Stream {
 public:
-    FLACStreamer();
+    FLACStreamer(const fs::path &wav_path, const fs::path &flac_path);
     ~FLACStreamer();
 
 private:
+    ::FLAC__StreamEncoderWriteStatus write_callback(const FLAC__byte buffer[], size_t bytes,
+                                                    uint32_t samples,
+                                                    uint32_t current_frame) override;
+
 private:
+    drwav m_wav;
 };
 
 #if 0
@@ -47,3 +56,5 @@ protected:
     }
 };
 #endif
+
+} // namespace FLACStreaming
