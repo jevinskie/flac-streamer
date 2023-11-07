@@ -12,7 +12,9 @@ using namespace FLACStreaming;
 int main(int argc, const char *argv[]) {
     argparse::ArgumentParser parser(getprogname());
     parser.add_argument("-i", "--in-file").required().help("input wave file path");
-    parser.add_argument("-o", "--out-file").help("output FLAC file path (use - for stdout)");
+    parser.add_argument("-o", "--out-file")
+        .required()
+        .help("output FLAC file path (use - for stdout)");
     parser.add_argument("-n", "--no-verify")
         .default_value(false)
         .implicit_value(true)
@@ -22,11 +24,11 @@ int main(int argc, const char *argv[]) {
         .implicit_value(true)
         .help("don't make output streamable");
     parser.add_argument("-c", "--compression-level")
-        .scan<'i', uint32_t>()
+        .scan<'i', int>()
         .default_value(5)
         .help("FLAC compression level");
     parser.add_argument("-b", "--block-size")
-        .scan<'i', uint32_t>()
+        .scan<'i', int>()
         .default_value(0)
         .help("FLAC compression level");
 
@@ -37,13 +39,13 @@ int main(int argc, const char *argv[]) {
         return -1;
     }
 
-    const auto comp_level = parser.get<uint32_t>("--compression-level");
+    const auto comp_level = parser.get<int>("--compression-level");
     if (comp_level < 0 || comp_level > 8) {
         fmt::print(stderr, "Compression level must be between 0 and 8, not {}\n", comp_level);
         return -1;
     }
 
-    const auto block_size = parser.get<uint32_t>("--block-size");
+    const auto block_size = parser.get<int>("--block-size");
     const auto verify     = !parser.get<bool>("--no-verify");
     const auto streamable = !parser.get<bool>("--non-streamable");
 

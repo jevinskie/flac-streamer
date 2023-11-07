@@ -40,10 +40,6 @@ FLACStreamer::FLACStreamer(const fs::path &wav_path, const fs::path &flac_path)
         posix_check(m_out_fd, fmt::format("trying to fileno() FILE* {} for {}", fmt::ptr(stdout),
                                           m_flac_path));
     }
-    if (const auto init_res = init(); init_res != FLAC__STREAM_ENCODER_INIT_STATUS_OK) {
-        throw std::runtime_error(fmt::format("FLAC::Encoder::Stream::init() failed with: {}",
-                                             std::to_underlying(init_res)));
-    }
 }
 
 FLACStreamer::~FLACStreamer() {
@@ -58,6 +54,10 @@ FLACStreamer::~FLACStreamer() {
 }
 
 void FLACStreamer::encode() {
+    if (const auto init_res = init(); init_res != FLAC__STREAM_ENCODER_INIT_STATUS_OK) {
+        throw std::runtime_error(fmt::format("FLAC::Encoder::Stream::init() failed with: {}",
+                                             std::to_underlying(init_res)));
+    }
     const auto num_samples  = m_wav.totalPCMFrameCount;
     const auto num_channels = m_wav.channels;
     const auto num_bits     = m_wav.bitsPerSample;
